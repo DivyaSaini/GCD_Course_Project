@@ -64,28 +64,37 @@ cameraDataSubset
 #The XLConnect vignette ("http://cran.r-project.org/web/packages/XLConnect/vignettes/XLConnect.pdf") is a good place to start for that package
 #In general it is advised to store your data in either a database or in comma separated files (.csv) or tab separated files (.tab/.txt) as they are easier to distribute.
 ## Reading XML
-library(XML)
+#XML:Extensible markup language -> widely used to store structured data
+#Two components : Markup (labels that give the text structure) and Content (the actual text of the document inbetween the labels)
+install.packages('XML') # install the XML package
+library(XML) # load the XML package
 fileUrl <- "http://www.w3schools.com/xml/simple.xml"
-doc <- xmlTreeParse(fileUrl, useInternal=TRUE)
+doc <- xmlTreeParse(fileUrl, useInternal=TRUE) # loads the file into internal memory of R in a way that you can parse it and get access to different parts of it
 doc
-rootNode <- xmlRoot(doc)
-rootNode
-xmlName(rootNode)
-names(rootNode)
-rootNode[[1]]
-rootNode[[1]][[3]]
-xmlSApply(rootNode, xmlValue)
-xpathSApply(rootNode, "//name", xmlValue)
-xpathSApply(rootNode, "//price", xmlValue)
+rootNode <- xmlRoot(doc) # gives access to root node of the xml i.e. wrapper element for the entire doc
+rootNode # loads the whole root node
+xmlName(rootNode) # "breakfast_menu" : to get the name of the root node 
+names(rootNode) # tells all the nested elements within that rootNode only till next level not till innermost node
+##Directly access parts of the XML document
+rootNode[[1]] # to fetch first node of root node
+rootNode[[1]][[3]] # fetches third node of first node
+##Programatically extract parts of the file
+xmlSApply(rootNode, xmlValue) # loops through the XML object "rootNode" and "xmlValue" extracts value from all its nodes
+# XPath:  http://www.stat.berkeley.edu/~statcur/Workshop2/Presentations/XML.pdf
+xpathSApply(rootNode, "//name", xmlValue) # fetches values for all the nodes with tag "name"
+xpathSApply(rootNode, "//price", xmlValue) # fetches values for all the nodes with tag "price"
 xpathSApply(rootNode, "//description", xmlValue)
 xpathSApply(rootNode, "//calories", xmlValue)
 ## Reading 
 fileUrl <- "http://espn.go.com/nfl/team/_/name/bal/baltimore-ravens"
-doc <- htmlTreeParse(fileUrl, useInternal=TRUE)
+doc <- htmlTreeParse(fileUrl, useInternal=TRUE) # function to parse an HTML file
 scores <- xpathSApply(doc, "//li[@class='score']", xmlValue)
 teams <- xpathSApply(doc, "//li[@class='team-name']", xmlValue)
-scores
-teams
+scores # page doesn't have this class anymore
+teams # page doesn't have this class anymore
+#Short guide on XML package : http://www.omegahat.org/RSXML/shortIntro.pdf
+#Long guide on XML package : http://www.omegahat.org/RSXML/Tour.pdf
+#Outstanding guide to XML package : http://www.stat.berkeley.edu/~statcur/Workshop2/Presentations/XML.pdf
 ## Reading JSON
 library(jsonlite)
 jsonData <- fromJSON("https://api.github.com/users/jtleek/repos")
