@@ -45,6 +45,16 @@ dbDisconnect(hg19) # TRUE
 
 
 
+## Reading from HDF5 - Heirarchical data format - http://www.hdfgroup.org/
+# http://www.bioconductor.org/packages/release/bioc/vignettes/rhdf5/inst/doc/rhdf5.pdf
+
+source("http://bioconductor.org/biocLite.R") # to install the package
+biocLite("rhdf5") # to download rhd5 package
+
+library(rhdf5) # load the package
+
+created = h5createFile("example.h5") #create an hdf5 file
+created # TRUE
 
 
 
