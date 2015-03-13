@@ -56,6 +56,11 @@ library(rhdf5) # load the package
 created = h5createFile("example.h5") #create an hdf5 file
 created # TRUE
 
+# Create Group with the hdf5 file
 
+created = h5createGroup("example.h5","foo")
+created = h5createGroup("example.h5","baa")
+created = h5createGroup("example.h5","foo/foobaa")
+h5ls("example.h5") # to list components of hdr5 file
 
 
