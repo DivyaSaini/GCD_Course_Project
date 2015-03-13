@@ -11,14 +11,11 @@ hg19 <- dbConnect(MySQL(),user="genome", db="hg19", host="genome-mysql.cse.ucsc.
 allTables <- dbListTables(hg19)
 length(allTables) # 11012
 allTables[1:5] # "HInv"  "HInvGeneMrna"  "acembly"  "acemblyClass"  "acemblyPep"
-dbListFields(hg19,"affyU133Plus2")
+dbListFields(hg19,"affyU133Plus2") 
 dbGetQuery(hg19, "select count(*) from affyU133Plus2")
 affyData <- dbReadTable(hg19, "affyU133Plus2")
 head(affyData)
-
-
-
-
+dbDisconnect(hg19) 
 
 
 
