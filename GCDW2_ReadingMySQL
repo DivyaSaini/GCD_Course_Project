@@ -1,0 +1,51 @@
+## Reading from MySQL
+#Install MySQL - http://www.ahschulz.de/2013/07/23/installing-rmysql-under-windows/
+# UCSC database - http://genome.ucsc.edu/
+# UCSC MySQL - http://genome.ucsc.edu/goldenPath/help/mysql.html
+# table ~ dataframe , field ~ column name
+
+ucscDb <- dbConnect(MySQL(),user="genome", host="genome-mysql.cse.ucsc.edu") # connect to server
+result <- dbGetQuery(ucscDb,"show databases;")
+dbDisconnect(ucscDb)
+result
+
+# to connect to specific DB
+hg19 <- dbConnect(MySQL(),user="genome", db="hg19", host="genome-mysql.cse.ucsc.edu") # to connect to db "hg19"
+allTables <- dbListTables(hg19) # fetch all tables in hg19
+length(allTables) # 11012
+allTables[1:5] # "HInv"  "HInvGeneMrna"  "acembly"  "acemblyClass"  "acemblyPep"
+dbListFields(hg19,"affyU133Plus2") # lists the fields in table "affyU133Plus2"
+dbGetQuery(hg19, "select count(*) from affyU133Plus2") # count total rows in table "affyU133Plus2"
+
+# to read a table
+affyData <- dbReadTable(hg19, "affyU133Plus2") # to read from table "affyU133Plus2"
+head(affyData) # prints first 6 rows of the table
+
+# to read specific subset
+query <- dbSendQuery(hg19, "select * from affyU133Plus2 where misMatches between 1 and 3") 
+affyMis <- fetch(query);
+quantile(affyMis$misMatches)
+
+# to fecth first 10 rows of the dataset
+affyMisSmall <- fetch(query,n=10)
+
+# to clear the query from remote server
+dbClearResult(query) #TRUE
+
+dim(affyMisSmall) # 10 22 (dimension)
+
+# to close the connection
+dbDisconnect(hg19) # TRUE
+
+## Useful Links
+# http://cran.r-project.org/web/packages/RMySQL/RMySQL.pdf
+# http://www.pantz.org/software/mysql/mysqlcommands.html
+# http://www.r-bloggers.com/mysql-and-r/
+
+
+
+
+
+
+
+
