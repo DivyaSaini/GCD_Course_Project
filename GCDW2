@@ -2,3 +2,28 @@
 #Install MySQL - http://www.ahschulz.de/2013/07/23/installing-rmysql-under-windows/
 # UCSC database - http://genome.ucsc.edu/
 # UCSC MySQL - http://genome.ucsc.edu/goldenPath/help/mysql.html
+# 
+ucscDb <- dbConnect(MySQL(),user="genome", host="genome-mysql.cse.ucsc.edu")
+result <- dbGetQuery(ucscDb,"show databases;")
+dbDisconnect(ucscDb)
+result
+hg19 <- dbConnect(MySQL(),user="genome", db="hg19", host="genome-mysql.cse.ucsc.edu")
+allTables <- dbListTables(hg19)
+length(allTables) # 11012
+allTables[1:5] # "HInv"  "HInvGeneMrna"  "acembly"  "acemblyClass"  "acemblyPep"
+dbListFields(hg19,"affyU133Plus2")
+dbGetQuery(hg19, "select count(*) from affyU133Plus2")
+affyData <- dbReadTable(hg19, "affyU133Plus2")
+head(affyData)
+
+
+
+
+
+
+
+
+
+
+
+
